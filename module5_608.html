@@ -1,0 +1,135 @@
+<html>
+
+
+<head><title>Module 5 - 608</title></head>
+
+<body>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.7.0/d3.min.js" ></script>
+  <script type="text/javascript">
+    function reverseWord(){
+
+      var input = document.getElementById('result1input').value;
+      var output = document.getElementById('result1');
+
+    output.innerHTML = input.split("").reverse().join("");
+    }
+
+    function createTable(){
+
+      var input = document.getElementById('result2input').value;
+      var output = document.getElementById('result2');
+
+      var table = document.createElement('table')
+
+      if(isNaN(input)){
+        alert('Must put a number')
+      }
+      else{
+        var count = 0;
+        var tr = document.createElement('tr');
+        for (var i = 1; i <= 20; i++){
+            var td = document.createElement('td');
+            td.innerHTML = input*i;
+            tr.appendChild(td);
+            count++;
+            if(count == 5){
+              count = 0;
+              table.appendChild(tr);
+              tr = document.createElement('tr');
+            }
+        }
+          output.appendChild(table);
+      }
+
+
+    }
+
+  function loadData(){
+    window.data = [];
+    var output = document.getElementById('result3table');
+
+    var table = document.createElement('table')
+
+      // header
+      var tr = document.createElement('tr');
+      var td = document.createElement('th');
+      td.innerHTML = "Name";
+      tr.appendChild(td);
+      td = document.createElement('th');
+      td.innerHTML = "Height";
+      tr.appendChild(td);
+      td = document.createElement('th');
+      td.innerHTML = "Weight";
+      tr.appendChild(td);
+      table.appendChild(tr);
+
+      output.appendChild(table);
+
+    d3.csv("data/presidents.csv", function(data) {
+      window.data.push(data);
+      tr = document.createElement('tr');
+      td = document.createElement('td');
+      td.innerHTML = data.Name;
+      tr.appendChild(td);
+      td = document.createElement('td');
+      td.innerHTML = data.Height;
+      tr.appendChild(td);
+      td = document.createElement('td');
+      td.innerHTML = data.Weight;
+      tr.appendChild(td);
+      table.appendChild(tr);
+    });
+
+
+
+
+  }
+
+  function checkStats(){
+    var input = document.getElementById('result3input').value;
+    var output = document.getElementById('result3stats');
+    var found = false;
+    for (var i = 0; i < window.data.length; i++){
+      if(window.data[i].Name === input){
+        output.innerHTML= "Height: "+window.data[i].Height+", Weight: "+window.data[i].Weight;
+        found = true;
+      }
+    }
+    if(!found){
+      output.innerHTML= "No Results Found";
+    }
+  }
+
+  </script>
+
+<h1>Module 5 - 608</h1>
+<h2>Exercise 1a</h2>
+<form>
+  <input type="text" name="word" id="result1input">
+  <input type="button" onClick="reverseWord();" id="result1btn" value="reverse">
+
+  <div id="result1"></div>
+</form>
+
+
+
+
+<h2> Exercise 1b</h2>
+
+<form>
+  <input type="text" name="number" id="result2input">
+  <input type="button" onClick="createTable();" id="result2btn" value="create table">
+
+  <div id="result2"></div>
+</form>
+
+<h3> Exercise 2</h3>
+  <button onclick="loadData()" >load Data</button>
+  <br>
+  <input type="text" id="result3input">
+  <button onclick="checkStats()" />check stats</button>
+  <div id="result3stats"></div>
+  <div id="result3table"></div>
+
+</body>
+</html>
